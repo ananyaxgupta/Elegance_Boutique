@@ -1,10 +1,12 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
 import { useEffect, useState } from 'react'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 
 export default function AdminDashboard() {
-  const [orders, setOrders] = useState([])
+  const [orders, setOrders] = useState<any[]>([])
   const supabase = createClientComponentClient()
 
   useEffect(() => {

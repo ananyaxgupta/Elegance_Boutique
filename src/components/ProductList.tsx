@@ -1,8 +1,24 @@
 import { useState, useEffect } from 'react'
-import { supabase } from '../lib/supabaseClient'
+import { createClient } from '@supabase/supabase-js'
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY
+
+if (!supabaseUrl || !supabaseKey) {
+  throw new Error('Missing Supabase environment variables')
+}
+
+export const supabase = createClient(supabaseUrl, supabaseKey)
+
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  description: string;
+}
 
 export default function ProductList() {
-  const [products, setProducts] = useState([])
+  const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -19,7 +35,11 @@ export default function ProductList() {
       if (error) throw error
       setProducts(data || [])
     } catch (error) {
-      console.error('Error fetching products:', error.message)
+      if (error instanceof Error) {
+        console.error('Error fetching products:', error.message)
+      } else {
+        console.error('Error fetching products:', error)
+      }
     } finally {
       setLoading(false)
     }

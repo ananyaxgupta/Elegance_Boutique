@@ -3,19 +3,49 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: 248 249 250;
+  --foreground: 51 51 51;
+  --primary: 58 12 163;
+  --primary-light: 67 97 238;
+  --secondary: 76 201 240;
+  --accent: 247 37 133;
+  --card-bg: 255 255 255;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  body {
+    @apply bg-background text-foreground font-sans;
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  .container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .btn {
+    @apply inline-block px-4 py-2 rounded-md font-semibold text-sm transition duration-300 ease-in-out;
+  }
+
+  .btn-primary {
+    @apply bg-primary text-white hover:bg-primary-light;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary text-foreground hover:bg-opacity-80;
+  }
+
+  .card {
+    @apply bg-card-bg rounded-lg shadow-md overflow-hidden transition duration-300 ease-in-out hover:shadow-lg;
+  }
+
+  .input {
+    @apply w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent;
+  }
+}
+
+@layer utilities {
+  .gradient-bg {
+    @apply bg-gradient-to-r from-primary to-primary-light;
+  }
 }
