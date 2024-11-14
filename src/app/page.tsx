@@ -2,10 +2,10 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 const featuredProducts = [
-  { id: 1, name: 'Classic T-Shirt', price: 1999, image: '/placeholder.svg' },
-  { id: 2, name: 'Slim Fit Jeans', price: 3999, image: '/placeholder.svg' },
-  { id: 3, name: 'Summer Dress', price: 4999, image: '/placeholder.svg' },
-  { id: 4, name: 'Leather Jacket', price: 7999, image: '/placeholder.svg' },
+  { id: 1, name: 'Classic T-Shirt', price: 1999, image: '/images/tshirt.jpg' },
+  { id: 2, name: 'Slim Fit Jeans', price: 3999, image: '/images/jeans.jpg' },
+  { id: 3, name: 'Summer Dress', price: 4999, image: '/images/dress.jpg' },
+  { id: 4, name: 'Leather Jacket', price: 7999, image: '/images/jacket.jpg' },
 ]
 
 export default function Home() {
@@ -39,7 +39,13 @@ export default function Home() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
               {featuredProducts.map((product) => (
                 <div key={product.id} className="card">
-                  <Image src={product.image} alt={product.name} width={300} height={300} className="w-full h-48 object-cover" />
+                  <Image 
+                    src={product.image} 
+                    alt={product.name} 
+                    width={300} 
+                    height={300} 
+                    className="w-full h-48 object-cover"
+                  />
                   <div className="p-4">
                     <h3 className="font-semibold text-lg mb-2">{product.name}</h3>
                     <p className="text-gray-600 mb-4">₹{product.price / 100}</p>
@@ -54,7 +60,7 @@ export default function Home() {
 
       <footer className="gradient-bg text-white py-8">
         <div className="container mx-auto text-center">
-          <p>&copy; 2023 FashionStore. All rights reserved.</p>
+          <p>&copy; 2024 FashionStore. All rights reserved.</p>
         </div>
       </footer>
     </div>
