@@ -5,13 +5,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-
-if (!supabaseUrl || !supabaseKey) {
-  throw new Error('Missing Supabase environment variables')
-}
-
+// Create Supabase client outside of component to avoid re-creation
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? ''
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? ''
 const supabase = createClient(supabaseUrl, supabaseKey)
 
 interface Product {
@@ -27,30 +23,68 @@ export default function ProductList() {
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    fetchProducts()
+    setMounted(true)
   }, [])
+
+  useEffect(() => {
+    if (mounted) {
+      fetchProducts()
+    }
+  }, [mounted])
 
   async function fetchProducts() {
     try {
       setLoading(true)
-      const { data, error } = await supabase
+      setError(null)
+
+      const { data, error: supabaseError } = await supabase
         .from('products')
         .select('*')
       
-      if (error) throw error
+      if (supabaseError) {
+        throw new Error(supabaseError.message)
+      }
+
       setProducts(data || [])
-    } catch (error) {
+    } catch (err) {
       setError('Error fetching products. Please try again later.')
-      console.error('Error fetching products:', error)
+      console.error('Error details:', err)
     } finally {
       setLoading(false)
     }
   }
 
-  if (loading) return <div className="text-center py-10">Loading products...</div>
-  if (error) return <div className="text-center py-10 text-red-500">{error}</div>
+  // Prevent hydration issues by not rendering until mounted
+  if (!mounted) {
+    return null
+  }
+
+  if (loading) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="text-center py-10">Loading products...</div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="text-center py-10">
+          <p className="text-red-500 mb-4">{error}</p>
+          <button 
+            onClick={fetchProducts}
+            className="btn btn-primary"
+          >
+            Try Again
+          </button>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -58,18 +92,23 @@ export default function ProductList() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {products.map((product) => (
           <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden">
-            <Image 
-              src={product.image_url} 
-              alt={product.name} 
-              width={300} 
-              height={300} 
-              className="w-full h-48 object-cover"
-            />
+            <div className="relative h-48">
+              <Image 
+                src={product.image_url} 
+                alt={product.name}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              />
+            </div>
             <div className="p-4">
               <h3 className="font-semibold text-lg mb-2">{product.name}</h3>
               <p className="text-gray-600 mb-2">₹{(product.price / 100).toFixed(2)}</p>
               <p className="text-sm text-gray-500 mb-4">{product.description}</p>
-              <Link href={`/products/${product.id}`} className="btn btn-primary w-full text-center">
+              <Link 
+                href={`/product/${product.id}`} 
+                className="btn btn-primary w-full text-center block"
+              >
                 View Details
               </Link>
             </div>
