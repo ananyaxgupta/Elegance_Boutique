@@ -52,8 +52,8 @@ export default function Home() {
                   <div className="p-4">
                     <h3 className="font-semibold text-lg mb-2">{product.name}</h3>
                     <p className="text-gray-600 mb-4">₹{(product.price / 100).toFixed(2)}</p>
-                    <Link href={`/products/${product.id}`} className="btn btn-primary w-full text-center">
-                      View Details
+                    <Link href={`/product/${product.id}`} className="btn btn-primary">
+                    View Details
                     </Link>
                   </div>
                 </div>
