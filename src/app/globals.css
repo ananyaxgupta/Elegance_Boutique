@@ -1,7 +1,9 @@
+/* tailwindcss */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Rest of your CSS file... */
 :root {
   --background: 248 249 250;
   --foreground: 51 51 51;

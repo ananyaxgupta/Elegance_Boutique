@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import './globals.css';
 
 const featuredProducts = [
   { id: 1, name: 'Classic T-Shirt', price: 1999, image: '/images/tshirt.jpg' },
@@ -29,7 +30,9 @@ export default function Home() {
           <div className="container mx-auto text-center">
             <h1 className="text-4xl font-bold mb-4">Welcome to FashionStore</h1>
             <p className="text-xl mb-8">Discover the latest trends in fashion</p>
-            <Link href="/products" className="btn btn-secondary">Shop Now</Link>
+            <Link href="/products" className="btn btn-secondary">
+              Shop Now
+            </Link>
           </div>
         </section>
 
@@ -48,8 +51,10 @@ export default function Home() {
                   />
                   <div className="p-4">
                     <h3 className="font-semibold text-lg mb-2">{product.name}</h3>
-                    <p className="text-gray-600 mb-4">₹{product.price / 100}</p>
-                    <Link href={`/products/${product.id}`} className="btn btn-primary w-full text-center">View Details</Link>
+                    <p className="text-gray-600 mb-4">₹{(product.price / 100).toFixed(2)}</p>
+                    <Link href={`/products/${product.id}`} className="btn btn-primary w-full text-center">
+                      View Details
+                    </Link>
                   </div>
                 </div>
               ))}
@@ -60,7 +65,7 @@ export default function Home() {
 
       <footer className="gradient-bg text-white py-8">
         <div className="container mx-auto text-center">
-          <p>&copy; 2024 FashionStore by Ananya Gupta. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} FashionStore. All rights reserved.</p>
         </div>
       </footer>
     </div>
