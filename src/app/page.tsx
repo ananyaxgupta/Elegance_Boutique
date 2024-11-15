@@ -60,7 +60,7 @@ export default function Home() {
 
       <footer className="gradient-bg text-white py-8">
         <div className="container mx-auto text-center">
-          <p>&copy; 2024 FashionStore. All rights reserved.</p>
+          <p>&copy; 2024 FashionStore by Ananya Gupta. All rights reserved.</p>
         </div>
       </footer>
     </div>
